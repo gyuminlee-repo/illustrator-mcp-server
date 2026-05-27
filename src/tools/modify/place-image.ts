@@ -26,11 +26,26 @@ if (preflight) {
     var imgFile = new File(filePath);
     if (!imgFile.exists) {
       writeResultFile(RESULT_PATH, { error: true, message: "Image file not found: " + filePath });
+    } else if (/\\.svgz?$/i.test(filePath)) {
+      writeResultFile(RESULT_PATH, {
+        error: true,
+        message: "place_image does not support SVG files. SVG placed via PlacedItems becomes a non-editable linked artwork and often leaves broken link items in the document. Use import_svg_as_editable to bring SVG content in as editable Illustrator paths/text."
+      });
     } else {
       var targetLayer = resolveTargetLayer(doc, params.layer_name);
 
       var placed = targetLayer.placedItems.add();
-      placed.file = imgFile;
+      try {
+        placed.file = imgFile;
+      } catch (linkErr) {
+        // Setting .file failed — remove the orphaned PlacedItem so no broken link remains
+        try { placed.remove(); } catch (rmErr) {}
+        writeResultFile(RESULT_PATH, {
+          error: true,
+          message: "Failed to link image file (likely unsupported or corrupt): " + linkErr.message + ". The empty placed item was removed."
+        });
+        return;
+      }
 
       // Position
       if (typeof params.x === "number" && typeof params.y === "number") {
@@ -97,7 +112,7 @@ export function register(server: McpServer): void {
     {
       title: 'Place Image',
       description:
-        'Place an image file (PNG, JPG, TIFF, PSD, etc.) into the document as a linked or embedded image. Note: Illustrator will be activated (brought to foreground) during execution.',
+        'Place a raster or PDF image file (PNG, JPG, TIFF, PSD, PDF, etc.) into the document as a linked or embedded image. SVG is NOT supported here because PlacedItems produces a non-editable linked artwork — use import_svg_as_editable instead to bring SVG content in as editable paths/text. Note: Illustrator will be activated (brought to foreground) during execution.',
       inputSchema: {
         file_path: z.string().describe('Absolute path to the image file'),
         x: z.number().optional().describe('X position'),

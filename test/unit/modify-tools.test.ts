@@ -5,6 +5,8 @@ import { register as registerApplyColorProfile } from '../../src/tools/modify/ap
 import { register as registerConvertToOutlines } from '../../src/tools/modify/convert-to-outlines.js';
 import { register as registerModifyObject } from '../../src/tools/modify/modify-object.js';
 import { register as registerCreateLine } from '../../src/tools/modify/create-line.js';
+import { register as registerPlaceImage } from '../../src/tools/modify/place-image.js';
+import { register as registerImportSvgAsEditable } from '../../src/tools/modify/import-svg-as-editable.js';
 import { colorSchema } from '../../src/tools/modify/shared.js';
 import { captureInputSchema } from './helpers/tool-schema.js';
 
@@ -46,6 +48,33 @@ describe('modify tool schemas', () => {
         cap: 'round',
       },
     }).success).toBe(true);
+  });
+
+  it('exposes import_svg_as_editable schema with expected fields', () => {
+    const schema = captureInputSchema(registerImportSvgAsEditable);
+
+    expect(schema.safeParse({ file_path: '/tmp/icon.svg' }).success).toBe(true);
+    expect(
+      schema.safeParse({
+        file_path: '/tmp/icon.svg',
+        x: 10,
+        y: 20,
+        layer_name: 'Imported',
+        group: true,
+        fit_to_artboard: false,
+        padding: 8,
+        name: 'icon',
+      }).success,
+    ).toBe(true);
+    // file_path is required
+    expect(schema.safeParse({}).success).toBe(false);
+  });
+
+  it('place_image schema accepts non-svg path, advertises SVG is rejected', () => {
+    const schema = captureInputSchema(registerPlaceImage);
+    expect(schema.safeParse({ file_path: '/tmp/x.png' }).success).toBe(true);
+    // Note: SVG runtime rejection is enforced in the JSX layer, not the schema.
+    expect(schema.safeParse({ file_path: '/tmp/x.svg' }).success).toBe(true);
   });
 
   it('removes coordinate_system from tools that do not use coordinates', () => {

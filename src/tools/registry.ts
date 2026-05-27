@@ -41,6 +41,7 @@ import { register as registerModifyObject } from './modify/modify-object.js';
 import { register as registerConvertToOutlines } from './modify/convert-to-outlines.js';
 import { register as registerApplyColorProfile } from './modify/apply-color-profile.js';
 import { register as registerPlaceImage } from './modify/place-image.js';
+import { register as registerImportSvgAsEditable } from './modify/import-svg-as-editable.js';
 import { register as registerResizeForVariation } from './modify/resize-for-variation.js';
 import { register as registerAlignObjects } from './modify/align-objects.js';
 import { register as registerReplaceColor } from './modify/replace-color.js';
@@ -117,6 +118,7 @@ export function registerAllTools(server: McpServer): void {
   registerConvertToOutlines(server);
   registerApplyColorProfile(server);
   registerPlaceImage(server);
+  registerImportSvgAsEditable(server);
   registerResizeForVariation(server);
   registerAlignObjects(server);
   registerReplaceColor(server);

@@ -291,7 +291,7 @@ Pre-built workflow templates available in the Claude Desktop prompt picker.
 
 </details>
 
-### Modify Tools (38)
+### Modify Tools (39)
 
 <details>
 <summary>Click to expand</summary>
@@ -303,7 +303,8 @@ Pre-built workflow templates available in the Claude Desktop prompt picker.
 | `create_line` | Create a line |
 | `create_text_frame` | Create a text frame (point or area type) |
 | `create_path` | Create a custom path (with Bezier handles) |
-| `place_image` | Place an image file as linked or embedded |
+| `place_image` | Place a raster/PDF image file as linked or embedded (SVG is rejected — use `import_svg_as_editable`) |
+| `import_svg_as_editable` | Import an SVG file as editable Illustrator paths/text/groups (not as a linked image) |
 | `modify_object` | Modify properties of an existing object |
 | `convert_to_outlines` | Convert text to outlines |
 | `assign_color_profile` | Assign (tag) a color profile (does not convert color values) |

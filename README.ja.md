@@ -290,7 +290,7 @@ Claude Desktop のプロンプト一覧から選択できるワークフロー�
 
 </details>
 
-### 操作系 (38)
+### 操作系 (39)
 
 <details>
 <summary>クリックして展開</summary>
@@ -302,7 +302,8 @@ Claude Desktop のプロンプト一覧から選択できるワークフロー�
 | `create_line` | 直線の作成 |
 | `create_text_frame` | テキストフレームの作成（ポイント/エリア） |
 | `create_path` | 任意パスの作成（ベジェハンドル対応） |
-| `place_image` | 画像ファイルの配置（リンク/埋め込み） |
+| `place_image` | ラスター/PDF画像ファイルの配置（リンク/埋め込み）。SVG は拒否される — `import_svg_as_editable` を使用 |
+| `import_svg_as_editable` | SVG ファイルを編集可能なパス・テキスト・グループとして取り込み（リンク画像ではなく編集可能オブジェクトとして） |
 | `modify_object` | 既存オブジェクトのプロパティ変更 |
 | `convert_to_outlines` | テキストのアウトライン化 |
 | `assign_color_profile` | カラープロファイルの割り当て（色値の変換は行わない） |
