@@ -226,6 +226,42 @@ if (preflight) {
       }
     } catch(e) {}
 
+    // 4b. Missing fonts — 使用フォントをインストール済みフォント (app.textFonts) と照合
+    // getByName() は未インストールのフォント名で例外を投げることを利用する
+    try {
+      var usedFonts = {}; // フォント名 → 最初に使用しているテキストフレームのUUID
+      for (var mf = 0; mf < doc.textFrames.length; mf++) {
+        try {
+          var mFrame = doc.textFrames[mf];
+          var mRanges = mFrame.textRanges;
+          // ponytail: 全文字走査はコスト高のため1フレーム500文字上限でサンプリング。
+          // 501文字目以降だけで使われるフォントは見逃す。問題になったら全走査に変更
+          var mStep = mRanges.length > 500 ? Math.ceil(mRanges.length / 500) : 1;
+          for (var mc = 0; mc < mRanges.length; mc += mStep) {
+            try {
+              var mFont = mRanges[mc].characterAttributes.textFont;
+              if (mFont && mFont.name && !usedFonts[mFont.name]) {
+                usedFonts[mFont.name] = ensureUUID(mFrame);
+              }
+            } catch (eMc) {}
+          }
+        } catch (eMf) {}
+      }
+      for (var fontKey in usedFonts) {
+        var isInstalled = true;
+        try { app.textFonts.getByName(fontKey); } catch (eGet) { isInstalled = false; }
+        if (!isInstalled) {
+          results.push({
+            level: "error",
+            category: "missing_font",
+            message: "Font is not installed on this system: " + fontKey,
+            uuid: usedFonts[fontKey],
+            details: { font: fontKey }
+          });
+        }
+      }
+    } catch(e) {}
+
     // 5. White overprint
     for (var layerIdx2 = 0; layerIdx2 < doc.layers.length; layerIdx2++) {
       iterateAllItems(doc.layers[layerIdx2], function(item) {
