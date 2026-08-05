@@ -111,7 +111,11 @@ export async function callTool(client: Client, name: string, params: Record<stri
   for (let i = content.length - 1; i >= 0; i--) {
     if (content[i].type === 'text') {
       try {
-        return JSON.parse(content[i].text);
+        const parsed = JSON.parse(content[i].text);
+        // export の PNG/JPG レスポンスは [結果JSON, visual_check_hint, base64画像] の
+        // 3要素構成。ヒントは本来の結果ではないため読み飛ばす
+        if (parsed && typeof parsed === 'object' && 'visual_check_hint' in parsed) continue;
+        return parsed;
       } catch { /* not JSON, try next */ }
     }
   }

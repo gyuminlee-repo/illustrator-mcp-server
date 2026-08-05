@@ -5,7 +5,7 @@
  *
  * 使い方: npx tsx test/e2e/e2e-test.ts
  */
-import { unlinkSync, mkdirSync, rmSync } from 'fs';
+import { unlinkSync, mkdirSync, rmSync, existsSync } from 'fs';
 import {
   createClient,
   callTool,
@@ -1046,6 +1046,54 @@ async function main(): Promise<void> {
     assert(result.success === true, 'JPG export should succeed');
   });
 
+  // --- artboard:all 一括書き出し ---
+  // スペース入りのアートボード名でファイル名サニタイズも検証する
+
+  await test('export PNG (artboard:all, 2 artboards)', async () => {
+    const add = await callTool(client, 'manage_artboards', {
+      action: 'add',
+      rect: { x: 900, y: 0, width: 400, height: 300 },
+      name: '__e2e ab two',
+    }) as any;
+    assert(add.success === true, 'add artboard should succeed: ' + JSON.stringify(add));
+
+    const result = await callTool(client, 'export', {
+      target: 'artboard:all',
+      format: 'png',
+      output_path: `${TMP_DIR}/e2e-all.png`,
+    }) as any;
+    assert(result.success === true, 'artboard:all PNG export should succeed: ' + JSON.stringify(result));
+    assert(result.count === 2, `count should be 2, got ${result.count}`);
+    assert(Array.isArray(result.files) && result.files.length === 2, 'files should have 2 entries');
+    for (const f of result.files) {
+      assert(existsSync(f), `exported file should exist: ${f}`);
+    }
+    assert(result.files[0].includes('_1-'), `first file should have _1- suffix: ${result.files[0]}`);
+    assert(result.files[1].includes('_2-'), `second file should have _2- suffix: ${result.files[1]}`);
+    assert(!result.files[1].split('/').pop()!.includes(' '),
+      `sanitized filename should not contain spaces: ${result.files[1]}`);
+    assert(!result.failed_artboards, 'should have no failed artboards');
+  });
+
+  await test('export SVG (artboard:all, rename detection)', async () => {
+    const result = await callTool(client, 'export', {
+      target: 'artboard:all',
+      format: 'svg',
+      output_path: `${TMP_DIR}/e2e-all.svg`,
+    }) as any;
+    assert(result.success === true, 'artboard:all SVG export should succeed: ' + JSON.stringify(result));
+    assert(result.count === 2, `count should be 2, got ${result.count}`);
+    for (const f of result.files) {
+      assert(existsSync(f), `exported file should exist: ${f}`);
+    }
+    // cleanup: 追加したアートボードを削除して以降のテストへの影響を防ぐ
+    const ab = await callTool(client, 'get_artboards') as any;
+    const rm = await callTool(client, 'manage_artboards', {
+      action: 'remove', index: ab.artboards.length - 1,
+    }) as any;
+    assert(rm.success === true, 'cleanup remove should succeed');
+  });
+
   // UUID 指定の isolated export — macOS /tmp symlink 対応
   await test('export PNG by UUID (isolated export)', async () => {
     const outPath = `${TMP_DIR}/e2e-uuid-export.png`;
@@ -1153,6 +1201,16 @@ async function main(): Promise<void> {
     const result = await callTool(client, 'preflight_check') as any;
     assert(typeof result.checkCount === 'number', 'should have checkCount');
     assert(Array.isArray(result.results), 'should have results array');
+  });
+
+  await test('preflight_check → no missing_font false positives', async () => {
+    // インストール済みフォントしか使っていないドキュメントで missing_font が
+    // 誤検出されないことを確認する（未インストールフォントの陽性テストは
+    // 環境にフォントを用意できないため実施しない）
+    const result = await callTool(client, 'preflight_check') as any;
+    const missing = result.results.filter((r: any) => r.category === 'missing_font');
+    assert(missing.length === 0,
+      `installed fonts should not be flagged as missing, got: ${JSON.stringify(missing.map((m: any) => m.details))}`);
   });
 
   await test('preflight_check → low_resolution detection (min_dpi: 150)', async () => {
