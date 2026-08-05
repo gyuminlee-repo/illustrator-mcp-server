@@ -156,13 +156,14 @@ Claude:  → get_document_info → resize_for_variation
 
 Adobe incluye un servidor MCP integrado en **Illustrator Beta** (30.4+, todavía exclusivo de la Beta a agosto de 2026). Destaca trabajando con documentos existentes — análisis, recoloreado masivo, generación de variaciones a partir de plantillas, exportación por lotes de múltiples mesas de trabajo y comprobación de fuentes / enlaces rotos — e incluye un sistema de permisos de 3 niveles (ejecutar sin confirmación / confirmar antes de ejecutar / bloquear).
 
-Ambos son complementarios, no competidores: el servidor oficial se centra en **analizar y procesar por lotes documentos existentes**, mientras que este proyecto se centra en **crear obras desde cero y en flujos de trabajo de producción para imprenta**.
+Los flujos de trabajo con documentos existentes — análisis, recoloreado masivo, variaciones a partir de plantillas, exportación por lotes de mesas de trabajo y comprobación de fuentes / enlaces rotos — están cubiertos por ambos. Lo que distingue a este proyecto es **crear obras desde cero y los flujos de trabajo de producción para imprenta**, algo que el servidor oficial no cubre.
 
 | | Este proyecto | MCP oficial de Adobe (beta) |
 |---|---|---|
 | Instalación | npm (`npx illustrator-mcp-server`) o instalación en un clic con `.mcpb` | Integrado en Illustrator Beta — obtén una clave de autenticación + URL en los ajustes de la app y conéctate vía `mcp-remote` |
 | Versiones compatibles | Illustrator CC 2024+ estable (macOS / Windows) | Solo Illustrator Beta 30.4+ |
 | Número de herramientas | 63 | ~40 |
+| Análisis y procesamiento por lotes de documentos existentes | ✅ Análisis de estructura / color / fuentes, recoloreado masivo, variaciones y conjuntos de datos, exportación por lotes de mesas de trabajo (`artboard:all`), preflight de fuentes y enlaces rotos | ✅ Su enfoque principal |
 | Creación de objetos desde cero | ✅ Conjunto completo — documentos, formas, trazados, marcos de texto, texto en trazado, degradados | ❌ Sin nuevos objetos, marcos de texto ni documentos \* |
 | Guardar documentos | ✅ `save_document` (guardar / guardar como) | ❌ Solo exportación \* |
 | Impresión y preimpresión | ✅ Marcas de corte, preflight, sobreimpresión / separaciones, contornos, perfiles de color | — |

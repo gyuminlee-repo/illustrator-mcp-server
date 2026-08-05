@@ -156,13 +156,14 @@ Claude:  → get_document_info → resize_for_variation
 
 Adobe intègre un serveur MCP dans **Illustrator Beta** (30.4+, toujours réservé à la Beta en août 2026). Il excelle dans le travail sur des documents existants — analyse, recoloration en masse, génération de déclinaisons à partir de modèles, export par lot de plusieurs plans de travail, vérification des polices / liens manquants — et propose une gestion des autorisations à 3 niveaux (exécution sans confirmation / confirmation avant exécution / blocage).
 
-Les deux sont complémentaires plutôt que concurrents : le serveur officiel se concentre sur **l'analyse et le traitement par lot de documents existants**, tandis que ce projet se concentre sur **la création à partir de zéro et les workflows de production print**.
+Les workflows sur documents existants — analyse, recoloration en masse, déclinaisons à partir de modèles, export par lot des plans de travail et vérification des polices / liens manquants — sont couverts par les deux. Ce qui distingue ce projet, c'est **la création à partir de zéro et les workflows de production print**, que le serveur officiel ne couvre pas.
 
 | | Ce projet | MCP officiel d'Adobe (bêta) |
 |---|---|---|
 | Installation | npm (`npx illustrator-mcp-server`) ou installation en un clic via `.mcpb` | Intégré à Illustrator Beta — récupérez une clé d'authentification + URL dans les réglages de l'application, connexion via `mcp-remote` |
 | Versions prises en charge | Illustrator CC 2024+ stable (macOS / Windows) | Illustrator Beta 30.4+ uniquement |
 | Nombre d'outils | 63 | ~40 |
+| Analyse & traitement par lot de documents existants | ✅ Analyse de structure / couleurs / polices, recoloration en masse, déclinaisons & jeux de données, export par lot des plans de travail (`artboard:all`), preflight polices & liens manquants | ✅ Son axe principal |
 | Création d'objets à partir de zéro | ✅ Ensemble complet — documents, formes, tracés, blocs de texte, texte sur tracé, dégradés | ❌ Pas de nouveaux objets, blocs de texte ni documents \* |
 | Enregistrement des documents | ✅ `save_document` (enregistrer / enregistrer sous) | ❌ Export uniquement \* |
 | Impression & prépresse | ✅ Traits de coupe, preflight, infos de surimpression / séparation, vectorisation, profils colorimétriques | — |

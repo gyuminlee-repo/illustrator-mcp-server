@@ -156,13 +156,14 @@ Claude:  → get_document_info → resize_for_variation
 
 Adobe ships a built-in MCP server in **Illustrator Beta** (30.4+, still beta-only as of August 2026). It excels at working with existing documents — analysis, bulk recoloring, generating variations from templates, batch-exporting multiple artboards, and font / missing-link checks — and includes a built-in 3-level permission system (run without confirmation / confirm before running / block).
 
-The two are complementary rather than competing: the official server focuses on **analyzing and batch-processing existing documents**, while this project focuses on **creating artwork from scratch and print-production workflows**.
+Existing-document workflows — analysis, bulk recoloring, template variations, batch artboard export, and font / broken-link checks — are covered by both. What sets this project apart is **creating artwork from scratch and print-production workflows**, which the official server does not cover.
 
 | | This project | Adobe official MCP (beta) |
 |---|---|---|
 | Installation | npm (`npx illustrator-mcp-server`) or one-click `.mcpb` install | Built into Illustrator Beta — get an auth key + URL from the app settings, connect via `mcp-remote` |
 | Supported versions | Stable Illustrator CC 2024+ (macOS / Windows) | Illustrator Beta 30.4+ only |
 | Number of tools | 63 | ~40 |
+| Analyzing & batch-processing existing documents | ✅ Structure / color / font analysis, bulk recolor, variations & datasets, batch artboard export (`artboard:all`), font & broken-link preflight | ✅ Its main focus |
 | Creating objects from scratch | ✅ Full set — documents, shapes, paths, text frames, path text, gradients | ❌ No new objects, text frames, or documents \* |
 | Saving documents | ✅ `save_document` (save / save-as) | ❌ Export only \* |
 | Print & prepress | ✅ Crop marks, preflight, overprint / separation info, outlines, color profiles | — |

@@ -69,6 +69,8 @@ if (preflight) {
         writeResultFile(RESULT_PATH, { error: true, message: "No objects are selected" });
         targetType = "error";
       }
+    } else if (target === "artboard:all") {
+      targetType = "artboard-all";
     } else if (target.indexOf("artboard:") === 0) {
       targetType = "artboard";
       artboardIndex = parseInt(target.replace("artboard:", ""), 10);
@@ -172,99 +174,151 @@ if (preflight) {
         }
 
       } else {
-        // 従来の書き出しロジック（artboard / selection / SVG）
-        if (format === "svg") {
-          var opts = new ExportOptionsSVG();
-          opts.fontSubsetting = SVGFontSubsetting.None;
+        // 従来の書き出しロジック（artboard / artboard:all / selection / SVG）
+        // abIdx >= 0 でアートボード書き出し、-1 で selection 書き出し
+        var exportOne = function (abIdx, file) {
+          if (format === "svg") {
+            var opts = new ExportOptionsSVG();
+            opts.fontSubsetting = SVGFontSubsetting.None;
 
-          if (svgOpts.text_outline === true) {
-            opts.fontType = SVGFontType.OUTLINEFONT;
-          }
-          if (svgOpts.css_properties === true) {
-            opts.cssProperties = SVGCSSPropertyLocation.STYLEELEMENTS;
-          } else {
-            opts.cssProperties = SVGCSSPropertyLocation.PRESENTATIONATTRIBUTES;
-          }
-          if (typeof svgOpts.embed_images !== "undefined") {
-            opts.embedRasterImages = svgOpts.embed_images;
-          }
-          try {
-            if (svgOpts.id_naming === "layer") {
-              opts.idType = SVGIdType.SVGIDMINIMAL;
-            } else if (svgOpts.id_naming === "object") {
-              opts.idType = SVGIdType.SVGIDUNIQUE;
-            } else {
-              opts.idType = SVGIdType.SVGIDREGULAR;
+            if (svgOpts.text_outline === true) {
+              opts.fontType = SVGFontType.OUTLINEFONT;
             }
-          } catch (_) { /* SVGIdType may not exist in some ExtendScript versions */ }
-          if (typeof svgOpts.decimal_places === "number") {
-            opts.coordinatePrecision = svgOpts.decimal_places;
+            if (svgOpts.css_properties === true) {
+              opts.cssProperties = SVGCSSPropertyLocation.STYLEELEMENTS;
+            } else {
+              opts.cssProperties = SVGCSSPropertyLocation.PRESENTATIONATTRIBUTES;
+            }
+            if (typeof svgOpts.embed_images !== "undefined") {
+              opts.embedRasterImages = svgOpts.embed_images;
+            }
+            try {
+              if (svgOpts.id_naming === "layer") {
+                opts.idType = SVGIdType.SVGIDMINIMAL;
+              } else if (svgOpts.id_naming === "object") {
+                opts.idType = SVGIdType.SVGIDUNIQUE;
+              } else {
+                opts.idType = SVGIdType.SVGIDREGULAR;
+              }
+            } catch (_) { /* SVGIdType may not exist in some ExtendScript versions */ }
+            if (typeof svgOpts.decimal_places === "number") {
+              opts.coordinatePrecision = svgOpts.decimal_places;
+            }
+            if (abIdx >= 0) {
+              doc.artboards.setActiveArtboardIndex(abIdx);
+              opts.artBoardClipping = true;
+              opts.saveMultipleArtboards = true;
+              opts.artboardRange = String(abIdx + 1);
+            } else {
+              opts.artBoardClipping = false;
+            }
+
+            doc.exportFile(file, ExportType.SVG, opts);
+
+          } else if (format === "png") {
+            var pngOpts = new ExportOptionsPNG24();
+            var dpi = (rasterOpts.dpi || 72) * scale;
+            pngOpts.horizontalScale = (dpi / 72) * 100;
+            pngOpts.verticalScale = (dpi / 72) * 100;
+            pngOpts.antiAliasing = (typeof rasterOpts.antialiasing !== "undefined") ? rasterOpts.antialiasing : true;
+
+            if (rasterOpts.background === "transparent") {
+              pngOpts.transparency = true;
+            } else {
+              pngOpts.transparency = false;
+            }
+
+            if (abIdx >= 0) {
+              doc.artboards.setActiveArtboardIndex(abIdx);
+              pngOpts.artBoardClipping = true;
+            } else {
+              pngOpts.artBoardClipping = false;
+            }
+
+            doc.exportFile(file, ExportType.PNG24, pngOpts);
+
+          } else if (format === "jpg") {
+            var jpgOpts = new ExportOptionsJPEG();
+            var jpgDpi = (rasterOpts.dpi || 72) * scale;
+            jpgOpts.horizontalScale = (jpgDpi / 72) * 100;
+            jpgOpts.verticalScale = (jpgDpi / 72) * 100;
+            jpgOpts.antiAliasing = (typeof rasterOpts.antialiasing !== "undefined") ? rasterOpts.antialiasing : true;
+            jpgOpts.qualitySetting = 80;
+
+            if (abIdx >= 0) {
+              doc.artboards.setActiveArtboardIndex(abIdx);
+              jpgOpts.artBoardClipping = true;
+            } else {
+              jpgOpts.artBoardClipping = false;
+            }
+
+            doc.exportFile(file, ExportType.JPEG, jpgOpts);
           }
-          if (targetType === "artboard") {
-            doc.artboards.setActiveArtboardIndex(artboardIndex);
-            opts.artBoardClipping = true;
-            opts.saveMultipleArtboards = true;
-            opts.artboardRange = String(artboardIndex + 1);
-          } else if (targetType === "selection") {
-            opts.artBoardClipping = false;
+        };
+
+        // エクスポート後のファイル存在検証。実際の出力パスを返す（存在しなければ null）
+        // SVG artboard exportではIllustratorが {basename}_{artboardName}.svg にリネームする
+        var verifyOne = function (path, abIdx) {
+          if (new File(path).exists) return path;
+          if (format === "svg" && abIdx >= 0) {
+            var svgDir = new File(path).parent.fsName;
+            var svgBase = new File(path).name.replace(/\\.svg$/i, '');
+            var abName = doc.artboards[abIdx].name.replace(/ /g, '-');
+            var svgActual = svgDir + '/' + svgBase + '_' + abName + '.svg';
+            if (new File(svgActual).exists) return svgActual;
           }
+          return null;
+        };
 
-          doc.exportFile(outFile, ExportType.SVG, opts);
-
-        } else if (format === "png") {
-          var pngOpts = new ExportOptionsPNG24();
-          var dpi = (rasterOpts.dpi || 72) * scale;
-          pngOpts.horizontalScale = (dpi / 72) * 100;
-          pngOpts.verticalScale = (dpi / 72) * 100;
-          pngOpts.antiAliasing = (typeof rasterOpts.antialiasing !== "undefined") ? rasterOpts.antialiasing : true;
-
-          if (rasterOpts.background === "transparent") {
-            pngOpts.transparency = true;
+        if (targetType === "artboard-all") {
+          var files = [];
+          var failedIndexes = [];
+          var dirName = outFile.parent.fsName;
+          var nameNoExt = outFile.name.replace(/\\.[^.]+$/, '');
+          var pathSep = Folder.fs === 'Windows' ? '\\\\' : '/';
+          for (var ai = 0; ai < doc.artboards.length; ai++) {
+            var abPath;
+            if (format === "svg") {
+              // SVGはIllustratorが _{artboardName} を付与するためベース名のみ渡す
+              abPath = dirName + pathSep + nameNoExt + '.svg';
+            } else {
+              var abLabel = doc.artboards[ai].name.replace(/ /g, '-');
+              abPath = dirName + pathSep + nameNoExt + '_' + (ai + 1) + '-' + abLabel + '.' + format;
+            }
+            exportOne(ai, new File(abPath));
+            var actual = verifyOne(abPath, ai);
+            if (actual) { files.push(actual); } else { failedIndexes.push(ai); }
+          }
+          if (files.length === 0) {
+            writeResultFile(RESULT_PATH, { error: true, message: "Export completed but no output files were created. The path may not be writable: " + dirName });
           } else {
-            pngOpts.transparency = false;
+            var allResult = { success: true, files: files, count: files.length, format: format };
+            if (failedIndexes.length > 0) {
+              allResult.failed_artboards = failedIndexes;
+            }
+            if (format === "png" || format === "jpg") {
+              allResult.dpi = (rasterOpts.dpi || 72) * scale;
+              allResult.scale = scale;
+            }
+            writeResultFile(RESULT_PATH, allResult);
           }
-
-          if (targetType === "artboard") {
-            doc.artboards.setActiveArtboardIndex(artboardIndex);
-            pngOpts.artBoardClipping = true;
-          } else if (targetType === "selection") {
-            pngOpts.artBoardClipping = false;
-          }
-
-          doc.exportFile(outFile, ExportType.PNG24, pngOpts);
-
-        } else if (format === "jpg") {
-          var jpgOpts = new ExportOptionsJPEG();
-          var jpgDpi = (rasterOpts.dpi || 72) * scale;
-          jpgOpts.horizontalScale = (jpgDpi / 72) * 100;
-          jpgOpts.verticalScale = (jpgDpi / 72) * 100;
-          jpgOpts.antiAliasing = (typeof rasterOpts.antialiasing !== "undefined") ? rasterOpts.antialiasing : true;
-          jpgOpts.qualitySetting = 80;
-
-          if (targetType === "artboard") {
-            doc.artboards.setActiveArtboardIndex(artboardIndex);
-            jpgOpts.artBoardClipping = true;
-          } else if (targetType === "selection") {
-            jpgOpts.artBoardClipping = false;
-          }
-
-          doc.exportFile(outFile, ExportType.JPEG, jpgOpts);
+        } else {
+          exportOne(targetType === "artboard" ? artboardIndex : -1, outFile);
         }
       }
 
-      if (targetType !== "error") {
+      if (targetType !== "error" && targetType !== "artboard-all") {
         // エクスポート後にファイル存在を検証
-        // SVG artboard exportではIllustratorが {basename}_{artboardName}.svg にリネームする
+        // （一時ドキュメント経由のパスでは verifyOne が未定義のためここで直接検証する）
         var actualPath = outputPath;
         var verifyFile = new File(outputPath);
         if (!verifyFile.exists && format === "svg" && artboardIndex >= 0) {
-          var svgDir = new File(outputPath).parent.fsName;
-          var svgBase = new File(outputPath).name.replace(/\\.svg$/i, '');
-          var abName = doc.artboards[artboardIndex].name.replace(/ /g, '-');
-          var svgActual = svgDir + '/' + svgBase + '_' + abName + '.svg';
-          var svgFile = new File(svgActual);
-          if (svgFile.exists) {
-            actualPath = svgActual;
+          var svgDir2 = new File(outputPath).parent.fsName;
+          var svgBase2 = new File(outputPath).name.replace(/\\.svg$/i, '');
+          var abName2 = doc.artboards[artboardIndex].name.replace(/ /g, '-');
+          var svgActual2 = svgDir2 + '/' + svgBase2 + '_' + abName2 + '.svg';
+          if (new File(svgActual2).exists) {
+            actualPath = svgActual2;
           }
         }
         var finalFile = new File(actualPath);
@@ -293,11 +347,11 @@ export function register(server: McpServer): void {
     'export',
     {
       title: 'Export',
-      description: 'Export objects, groups, artboards, or selection. For PNG/JPG, the exported image is returned as base64 in the response — you can view it directly without reading the file from disk. Note: Illustrator will be activated (brought to foreground) during execution.',
+      description: 'Export objects, groups, artboards, or selection. Use target "artboard:all" to batch-export every artboard in one call. For single PNG/JPG exports, the exported image is returned as base64 in the response — you can view it directly without reading the file from disk ("artboard:all" returns file paths only). Note: Illustrator will be activated (brought to foreground) during execution.',
       inputSchema: {
         target: z
           .string()
-          .describe('UUID, "artboard:<index>", or "selection". When exporting a UUID target as PNG/JPG, a temporary document is created internally (selection state may change).'),
+          .describe('UUID, "artboard:<index>", "artboard:all" (batch-export every artboard; filenames get "_<n>-<artboardName>" suffixes), or "selection". When exporting a UUID target as PNG/JPG, a temporary document is created internally (selection state may change).'),
         // WebP is not supported by ExtendScript API
         // format: z.enum(['svg', 'png', 'webp', 'jpg']).describe('Export format'),
         format: z.enum(['svg', 'png', 'jpg']).describe('Export format'),

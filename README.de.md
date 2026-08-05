@@ -156,13 +156,14 @@ Claude:  → get_document_info → resize_for_variation
 
 Adobe liefert einen integrierten MCP-Server in der **Illustrator Beta** (ab 30.4, Stand August 2026 weiterhin nur in der Beta). Er ist stark im Umgang mit bestehenden Dokumenten — Analyse, Massen-Umfärbung, Varianten aus Vorlagen, Stapel-Export mehrerer Zeichenflächen sowie Schrift- / Verknüpfungsprüfungen — und bringt ein 3-stufiges Berechtigungssystem mit (ohne Bestätigung ausführen / vor Ausführung bestätigen / blockieren).
 
-Beide ergänzen sich, statt zu konkurrieren: Der offizielle Server konzentriert sich auf **Analyse und Stapelverarbeitung bestehender Dokumente**, dieses Projekt auf **das Erstellen von Grund auf und Druckvorstufen-Workflows**.
+Workflows mit bestehenden Dokumenten — Analyse, Massen-Umfärbung, Varianten aus Vorlagen, Stapel-Export von Zeichenflächen sowie Schrift- / Verknüpfungsprüfungen — decken beide ab. Was dieses Projekt auszeichnet, sind **das Erstellen von Grund auf und Druckvorstufen-Workflows** — beides deckt der offizielle Server nicht ab.
 
 | | Dieses Projekt | Adobes offizieller MCP (Beta) |
 |---|---|---|
 | Installation | npm (`npx illustrator-mcp-server`) oder `.mcpb` per Ein-Klick-Installation | In Illustrator Beta integriert — Auth-Schlüssel + URL in den App-Einstellungen abrufen, Verbindung über `mcp-remote` |
 | Unterstützte Versionen | Stabiles Illustrator CC 2024+ (macOS / Windows) | Nur Illustrator Beta 30.4+ |
 | Anzahl der Werkzeuge | 63 | ca. 40 |
+| Analyse & Stapelverarbeitung bestehender Dokumente | ✅ Struktur- / Farb- / Schriftanalyse, Massen-Umfärbung, Varianten & Datensätze, Stapel-Export aller Zeichenflächen (`artboard:all`), Preflight für Schriften & defekte Verknüpfungen | ✅ Sein Hauptfokus |
 | Objekte von Grund auf erstellen | ✅ Kompletter Satz — Dokumente, Formen, Pfade, Textrahmen, Pfadtext, Verläufe | ❌ Keine neuen Objekte, Textrahmen oder Dokumente \* |
 | Dokumente speichern | ✅ `save_document` (Speichern / Speichern unter) | ❌ Nur Export \* |
 | Druck & Druckvorstufe | ✅ Schnittmarken, Preflight, Überdrucken- / Separationsinfos, Umwandlung in Pfade, Farbprofile | — |
