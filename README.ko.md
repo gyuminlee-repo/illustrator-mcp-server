@@ -13,6 +13,8 @@ Adobe Illustrator의 디자인 데이터를 읽고, 조작하고, 내보내기 �
 
 Claude와 같은 AI 어시스턴트에서 Illustrator를 직접 제어 — 웹 구현을 위한 디자인 정보 추출, 인쇄 납품용 데이터 검증, 에셋 내보내기까지.
 
+Adobe 공식 Illustrator MCP(Beta)가 할 수 있는 것은 전부, 그리고 그 이상까지. 자세한 내용은 [비교표](#-adobe-공식-illustrator-mcp와의-비교)를 참고하세요.
+
 [![illustrator mcp server MCP server](https://glama.ai/mcp/servers/ie3jp/illustrator-mcp-server/badges/card.svg)](https://glama.ai/mcp/servers/ie3jp/illustrator-mcp-server)
 
 ---
@@ -154,9 +156,7 @@ Claude:  → get_document_info → resize_for_variation
 
 ## 🆚 Adobe 공식 Illustrator MCP와의 비교
 
-Adobe는 **Illustrator Beta**(30.4 이상, 2026년 8월 기준 여전히 Beta 한정)에 MCP 서버를 내장하고 있습니다. 기존 문서 분석, 일괄 리컬러, 템플릿 기반 바리에이션 생성, 여러 아트보드 일괄 내보내기, 폰트 / 링크 누락 검사 등 기존 문서 처리에 강하며, 3단계 권한 관리(확인 없이 실행 / 실행 전 확인 / 차단)도 내장되어 있습니다.
-
-기존 문서 처리 워크플로우 — 분석, 일괄 리컬러, 템플릿 기반 바리에이션 생성, 여러 아트보드 일괄 내보내기, 폰트 / 링크 누락 검사 — 는 양쪽 모두 지원합니다. 본 프로젝트의 강점은 공식 서버가 지원하지 않는 **제로부터의 제작과 인쇄 입고 워크플로우**입니다.
+**요점: 공식 MCP가 할 수 있는 것은 본 프로젝트에서도 전부 가능하며, 그 이상까지 제공합니다.** Adobe는 **Illustrator Beta**(30.4 이상, 2026년 8월 기준 여전히 Beta 한정)에 MCP 서버를 내장하고 있으며, 기존 문서의 분석과 일괄 처리에 특화되어 있습니다. 본 프로젝트는 동일한 워크플로우 — 분석, 일괄 리컬러, 바리에이션 생성, 여러 아트보드 일괄 내보내기, 폰트 / 링크 누락 검사 — 를 모두 지원하면서, 공식에 없는 **제로부터의 제작, 문서 저장, 인쇄·입고 검사, 디자인 시스템 기능**을 갖추고 있습니다. 게다가 Beta 버전 없이 안정판 Illustrator에서 동작합니다.
 
 | | 본 프로젝트 | Adobe 공식 MCP (Beta) |
 |---|---|---|

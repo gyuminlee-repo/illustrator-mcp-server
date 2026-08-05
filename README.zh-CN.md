@@ -13,6 +13,8 @@
 
 通过 Claude 等 AI 助手直接控制 Illustrator —— 提取设计信息用于 Web 实现、验证印前数据、导出素材资源。
 
+Adobe 官方 Illustrator MCP（Beta）能做的这里全都能做，而且不止于此。详见[对比](#-与-adobe-官方-illustrator-mcp-的对比)。
+
 [![illustrator mcp server MCP server](https://glama.ai/mcp/servers/ie3jp/illustrator-mcp-server/badges/card.svg)](https://glama.ai/mcp/servers/ie3jp/illustrator-mcp-server)
 
 ---
@@ -154,9 +156,7 @@ Claude:  → get_document_info → resize_for_variation
 
 ## 🆚 与 Adobe 官方 Illustrator MCP 的对比
 
-Adobe 在 **Illustrator Beta**（30.4 及以上，截至 2026 年 8 月仍仅限 Beta 版）中内置了 MCP 服务器。它擅长处理现有文档 —— 分析、批量重新配色、基于模板生成变体、批量导出多个画板、字体 / 链接缺失检查 —— 并内置三级权限管理（无需确认执行 / 执行前确认 / 禁止）。
-
-处理现有文档的工作流 —— 分析、批量重新配色、基于模板生成变体、批量导出画板、字体 / 链接缺失检查 —— 两者均已覆盖。本项目的独特之处在于官方服务器尚未支持的**从零开始创作以及印刷生产工作流**。
+**一句话总结：官方 MCP 能做的，本项目全都能做 —— 而且远不止于此。** Adobe 在 **Illustrator Beta**（30.4 及以上，截至 2026 年 8 月仍仅限 Beta 版）中内置了 MCP 服务器，主打现有文档的分析与批量处理。本项目覆盖了同样的工作流 —— 分析、批量重新配色、生成变体、批量导出多个画板、字体 / 链接缺失检查 —— 并额外提供官方服务器所没有的能力：**从零开始创作、保存文档、印刷与印前检查、以及设计系统工具**。而且无需 Beta 版，在稳定版 Illustrator 上即可运行。
 
 | | 本项目 | Adobe 官方 MCP（Beta） |
 |---|---|---|

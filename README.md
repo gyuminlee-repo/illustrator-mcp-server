@@ -13,6 +13,8 @@ An [MCP (Model Context Protocol)](https://modelcontextprotocol.io/) server for r
 
 Control Illustrator directly from AI assistants like Claude — extract design information for web implementation, verify print-ready data, and export assets.
 
+Everything Adobe's official Illustrator MCP (beta) can do — and more. See the [comparison](#-comparison-with-adobes-official-illustrator-mcp).
+
 [![illustrator mcp server MCP server](https://glama.ai/mcp/servers/ie3jp/illustrator-mcp-server/badges/card.svg)](https://glama.ai/mcp/servers/ie3jp/illustrator-mcp-server)
 
 ---
@@ -154,9 +156,7 @@ Claude:  → get_document_info → resize_for_variation
 
 ## 🆚 Comparison with Adobe's Official Illustrator MCP
 
-Adobe ships a built-in MCP server in **Illustrator Beta** (30.4+, still beta-only as of August 2026). It excels at working with existing documents — analysis, bulk recoloring, generating variations from templates, batch-exporting multiple artboards, and font / missing-link checks — and includes a built-in 3-level permission system (run without confirmation / confirm before running / block).
-
-Existing-document workflows — analysis, bulk recoloring, template variations, batch artboard export, and font / broken-link checks — are covered by both. What sets this project apart is **creating artwork from scratch and print-production workflows**, which the official server does not cover.
+**In short: everything the official MCP does, this project does too — plus a lot more.** Adobe ships a built-in MCP server in **Illustrator Beta** (30.4+, still beta-only as of August 2026), focused on analyzing and batch-processing existing documents. This project covers those same workflows — analysis, bulk recoloring, variations, batch artboard export, font / broken-link checks — and adds what the official server doesn't have: **creating artwork from scratch, saving documents, print & prepress checks, and design-system tools**. And it runs on stable Illustrator, no beta required.
 
 | | This project | Adobe official MCP (beta) |
 |---|---|---|

@@ -13,6 +13,8 @@ Um servidor [MCP (Model Context Protocol)](https://modelcontextprotocol.io/) par
 
 Controle o Illustrator diretamente a partir de assistentes de IA como o Claude — extraia informações de design para implementação web, verifique dados prontos para impressão e exporte assets.
 
+Tudo o que o MCP oficial do Illustrator da Adobe (beta) faz — e muito mais. Veja a [comparação](#-comparação-com-o-mcp-oficial-do-illustrator-da-adobe).
+
 [![illustrator mcp server MCP server](https://glama.ai/mcp/servers/ie3jp/illustrator-mcp-server/badges/card.svg)](https://glama.ai/mcp/servers/ie3jp/illustrator-mcp-server)
 
 ---
@@ -154,9 +156,7 @@ Claude:  → get_document_info → resize_for_variation
 
 ## 🆚 Comparação com o MCP Oficial do Illustrator da Adobe
 
-A Adobe inclui um servidor MCP integrado no **Illustrator Beta** (30.4+, ainda restrito ao Beta em agosto de 2026). Ele se destaca no trabalho com documentos existentes — análise, recolorização em massa, geração de variações a partir de templates, exportação em lote de múltiplas pranchetas e verificação de fontes / links quebrados — e traz um sistema de permissões em 3 níveis (executar sem confirmação / confirmar antes de executar / bloquear).
-
-Fluxos de trabalho com documentos existentes — análise, recolorização em massa, variações a partir de templates, exportação em lote de pranchetas e verificação de fontes / links quebrados — são cobertos por ambos. O que diferencia este projeto é **criar do zero e os fluxos de trabalho de produção gráfica**, algo que o servidor oficial não cobre.
+**Em resumo: tudo o que o MCP oficial faz, este projeto também faz — e muito mais.** A Adobe inclui um servidor MCP integrado no **Illustrator Beta** (30.4+, ainda restrito ao Beta em agosto de 2026), focado em analisar e processar em lote documentos existentes. Este projeto cobre esses mesmos fluxos de trabalho — análise, recolorização em massa, variações, exportação em lote de pranchetas, verificação de fontes / links quebrados — e adiciona o que o servidor oficial não tem: **criar do zero, salvar documentos, verificações de impressão e pré-impressão, e ferramentas de design system**. E tudo isso rodando no Illustrator estável, sem precisar do Beta.
 
 | | Este projeto | MCP oficial da Adobe (beta) |
 |---|---|---|
