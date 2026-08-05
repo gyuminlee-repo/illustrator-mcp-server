@@ -257,44 +257,65 @@ if (preflight) {
         };
 
         // エクスポート後のファイル存在検証。実際の出力パスを返す（存在しなければ null）
-        // SVG artboard exportではIllustratorが {basename}_{artboardName}.svg にリネームする
-        var verifyOne = function (path, abIdx) {
+        // SVG artboard exportではIllustratorが {basename}_{artboardName}.svg にリネームする。
+        // 名前のマングリング規則が不定（特殊文字の扱いが不明）のため、名前を推測せず
+        // 「同フォルダで指定ベース名から始まり、書き出し開始以降に更新された .svg」を探す
+        var verifyOne = function (path, abIdx, sinceMs) {
           if (new File(path).exists) return path;
           if (format === "svg" && abIdx >= 0) {
-            var svgDir = new File(path).parent.fsName;
-            var svgBase = new File(path).name.replace(/\\.svg$/i, '');
-            var abName = doc.artboards[abIdx].name.replace(/ /g, '-');
-            var svgActual = svgDir + '/' + svgBase + '_' + abName + '.svg';
-            if (new File(svgActual).exists) return svgActual;
+            var prefix = path.replace(/\\.svg$/i, '');
+            var siblings = new File(path).parent.getFiles();
+            for (var ci = 0; ci < siblings.length; ci++) {
+              try {
+                var cand = siblings[ci];
+                if (cand instanceof File &&
+                    cand.fsName.indexOf(prefix) === 0 &&
+                    /\\.svg$/i.test(cand.fsName) &&
+                    cand.modified && cand.modified.getTime() >= sinceMs) {
+                  return cand.fsName;
+                }
+              } catch (eV) {}
+            }
           }
           return null;
         };
 
         if (targetType === "artboard-all") {
           var files = [];
-          var failedIndexes = [];
+          var failedList = [];
           var dirName = outFile.parent.fsName;
           var nameNoExt = outFile.name.replace(/\\.[^.]+$/, '');
           var pathSep = Folder.fs === 'Windows' ? '\\\\' : '/';
+          // ファイルシステムのタイムスタンプ解像度を考慮して2秒のマージンを取る
+          var batchStartMs = (new Date()).getTime() - 2000;
           for (var ai = 0; ai < doc.artboards.length; ai++) {
-            var abPath;
-            if (format === "svg") {
-              // SVGはIllustratorが _{artboardName} を付与するためベース名のみ渡す
-              abPath = dirName + pathSep + nameNoExt + '.svg';
-            } else {
-              var abLabel = doc.artboards[ai].name.replace(/ /g, '-');
-              abPath = dirName + pathSep + nameNoExt + '_' + (ai + 1) + '-' + abLabel + '.' + format;
+            // パス区切り等の危険文字とスペースをハイフンに置換。_<n>- の連番で同名アートボードの衝突も防ぐ
+            var abLabel = doc.artboards[ai].name.replace(/[\\/\\\\: ]/g, '-');
+            var abPath = dirName + pathSep + nameNoExt + '_' + (ai + 1) + '-' + abLabel + '.' + format;
+            var exportError = null;
+            try {
+              exportOne(ai, new File(abPath));
+            } catch (eAb) {
+              // 1枚の失敗で残りのアートボードを道連れにしない
+              exportError = eAb.message || String(eAb);
             }
-            exportOne(ai, new File(abPath));
-            var actual = verifyOne(abPath, ai);
-            if (actual) { files.push(actual); } else { failedIndexes.push(ai); }
+            var actual = exportError ? null : verifyOne(abPath, ai, batchStartMs);
+            if (actual) {
+              files.push(actual);
+            } else {
+              failedList.push({ index: ai, name: doc.artboards[ai].name, message: exportError || "output file was not created" });
+            }
           }
           if (files.length === 0) {
-            writeResultFile(RESULT_PATH, { error: true, message: "Export completed but no output files were created. The path may not be writable: " + dirName });
+            writeResultFile(RESULT_PATH, {
+              error: true,
+              message: "Batch export failed for all " + doc.artboards.length + " artboards. First error: " + failedList[0].message,
+              failed_artboards: failedList
+            });
           } else {
             var allResult = { success: true, files: files, count: files.length, format: format };
-            if (failedIndexes.length > 0) {
-              allResult.failed_artboards = failedIndexes;
+            if (failedList.length > 0) {
+              allResult.failed_artboards = failedList;
             }
             if (format === "png" || format === "jpg") {
               allResult.dpi = (rasterOpts.dpi || 72) * scale;
@@ -303,22 +324,21 @@ if (preflight) {
             writeResultFile(RESULT_PATH, allResult);
           }
         } else {
+          var singleStartMs = (new Date()).getTime() - 2000;
           exportOne(targetType === "artboard" ? artboardIndex : -1, outFile);
         }
       }
 
       if (targetType !== "error" && targetType !== "artboard-all") {
         // エクスポート後にファイル存在を検証
-        // （一時ドキュメント経由のパスでは verifyOne が未定義のためここで直接検証する）
+        // SVG + artboard の場合のみ verifyOne でリネーム後のファイルを探す
+        // （一時ドキュメント経由のPNG/JPGパスでは verifyOne 未定義だがこの分岐に入らない）
         var actualPath = outputPath;
         var verifyFile = new File(outputPath);
         if (!verifyFile.exists && format === "svg" && artboardIndex >= 0) {
-          var svgDir2 = new File(outputPath).parent.fsName;
-          var svgBase2 = new File(outputPath).name.replace(/\\.svg$/i, '');
-          var abName2 = doc.artboards[artboardIndex].name.replace(/ /g, '-');
-          var svgActual2 = svgDir2 + '/' + svgBase2 + '_' + abName2 + '.svg';
-          if (new File(svgActual2).exists) {
-            actualPath = svgActual2;
+          var renamed = verifyOne(outputPath, artboardIndex, singleStartMs);
+          if (renamed) {
+            actualPath = renamed;
           }
         }
         var finalFile = new File(actualPath);
