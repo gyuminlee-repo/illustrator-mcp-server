@@ -152,6 +152,26 @@ Claude:  → get_document_info → resize_for_variation
 
 ---
 
+## 🆚 Comparison with Adobe's Official Illustrator MCP
+
+Adobe ships a built-in MCP server in **Illustrator Beta** (30.4+, still beta-only as of August 2026). It excels at working with existing documents — analysis, bulk recoloring, generating variations from templates, batch-exporting multiple artboards, and font / missing-link checks — and includes a built-in 3-level permission system (run without confirmation / confirm before running / block).
+
+The two are complementary rather than competing: the official server focuses on **analyzing and batch-processing existing documents**, while this project focuses on **creating artwork from scratch and print-production workflows**.
+
+| | This project | Adobe official MCP (beta) |
+|---|---|---|
+| Installation | npm (`npx illustrator-mcp-server`) or one-click `.mcpb` install | Built into Illustrator Beta — get an auth key + URL from the app settings, connect via `mcp-remote` |
+| Supported versions | Stable Illustrator CC 2024+ (macOS / Windows) | Illustrator Beta 30.4+ only |
+| Number of tools | 63 | ~40 |
+| Creating objects from scratch | ✅ Full set — documents, shapes, paths, text frames, path text, gradients | ❌ No new objects, text frames, or documents \* |
+| Saving documents | ✅ `save_document` (save / save-as) | ❌ Export only \* |
+| Print & prepress | ✅ Crop marks, preflight, overprint / separation info, outlines, color profiles | — |
+| Design system | ✅ Design tokens, WCAG contrast check, style guides, text consistency | — |
+
+\* Based on user reports as of April 2026 (beta). The official server is under active development — see [Adobe's documentation](https://helpx.adobe.com/illustrator/desktop/connect-with-other-apps-and-tools/about-using-ai-tools-with-illustrator.html) for the latest status.
+
+---
+
 ## 📖 Recipes
 
 <details>

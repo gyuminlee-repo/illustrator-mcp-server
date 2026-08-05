@@ -152,6 +152,26 @@ Claude:  → get_document_info → resize_for_variation
 
 ---
 
+## 🆚 与 Adobe 官方 Illustrator MCP 的对比
+
+Adobe 在 **Illustrator Beta**（30.4 及以上，截至 2026 年 8 月仍仅限 Beta 版）中内置了 MCP 服务器。它擅长处理现有文档 —— 分析、批量重新配色、基于模板生成变体、批量导出多个画板、字体 / 链接缺失检查 —— 并内置三级权限管理（无需确认执行 / 执行前确认 / 禁止）。
+
+两者是互补而非竞争关系：官方服务器专注于**分析和批量处理现有文档**，本项目专注于**从零开始创作以及印刷生产工作流**。
+
+| | 本项目 | Adobe 官方 MCP（Beta） |
+|---|---|---|
+| 获取方式 | npm（`npx illustrator-mcp-server`）或一键安装 `.mcpb` | 内置于 Illustrator Beta —— 在应用设置中获取认证密钥和 URL，通过 `mcp-remote` 连接 |
+| 支持版本 | 稳定版 Illustrator CC 2024+（macOS / Windows） | 仅限 Illustrator Beta 30.4+ |
+| 工具数量 | 63 | 约 40 |
+| 从零创建对象 | ✅ 全套 —— 文档、图形、路径、文本框、路径文字、渐变 | ❌ 无法创建新对象、文本框或文档 \* |
+| 保存文档 | ✅ `save_document`（保存 / 另存为） | ❌ 仅支持导出 \* |
+| 印刷与印前功能 | ✅ 裁切标记、印前检查、叠印 / 分色信息、文字转轮廓、颜色配置文件 | — |
+| 设计系统功能 | ✅ 设计令牌、WCAG 对比度检查、样式指南、文本一致性检查 | — |
+
+\* 基于 2026 年 4 月（Beta）的用户报告。官方服务器仍在积极开发中 —— 最新状态请参阅 [Adobe 官方文档](https://helpx.adobe.com/illustrator/desktop/connect-with-other-apps-and-tools/about-using-ai-tools-with-illustrator.html)。
+
+---
+
 ## 📖 使用示例
 
 <details>

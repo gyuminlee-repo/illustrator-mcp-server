@@ -152,6 +152,26 @@ Claude:  → get_document_info → resize_for_variation
 
 ---
 
+## 🆚 Comparación con el MCP Oficial de Illustrator de Adobe
+
+Adobe incluye un servidor MCP integrado en **Illustrator Beta** (30.4+, todavía exclusivo de la Beta a agosto de 2026). Destaca trabajando con documentos existentes — análisis, recoloreado masivo, generación de variaciones a partir de plantillas, exportación por lotes de múltiples mesas de trabajo y comprobación de fuentes / enlaces rotos — e incluye un sistema de permisos de 3 niveles (ejecutar sin confirmación / confirmar antes de ejecutar / bloquear).
+
+Ambos son complementarios, no competidores: el servidor oficial se centra en **analizar y procesar por lotes documentos existentes**, mientras que este proyecto se centra en **crear obras desde cero y en flujos de trabajo de producción para imprenta**.
+
+| | Este proyecto | MCP oficial de Adobe (beta) |
+|---|---|---|
+| Instalación | npm (`npx illustrator-mcp-server`) o instalación en un clic con `.mcpb` | Integrado en Illustrator Beta — obtén una clave de autenticación + URL en los ajustes de la app y conéctate vía `mcp-remote` |
+| Versiones compatibles | Illustrator CC 2024+ estable (macOS / Windows) | Solo Illustrator Beta 30.4+ |
+| Número de herramientas | 63 | ~40 |
+| Creación de objetos desde cero | ✅ Conjunto completo — documentos, formas, trazados, marcos de texto, texto en trazado, degradados | ❌ Sin nuevos objetos, marcos de texto ni documentos \* |
+| Guardar documentos | ✅ `save_document` (guardar / guardar como) | ❌ Solo exportación \* |
+| Impresión y preimpresión | ✅ Marcas de corte, preflight, sobreimpresión / separaciones, contornos, perfiles de color | — |
+| Sistema de diseño | ✅ Tokens de diseño, comprobación de contraste WCAG, guías de estilo, consistencia de texto | — |
+
+\* Basado en informes de usuarios a abril de 2026 (beta). El servidor oficial está en desarrollo activo — consulta la [documentación de Adobe](https://helpx.adobe.com/illustrator/desktop/connect-with-other-apps-and-tools/about-using-ai-tools-with-illustrator.html) para el estado más reciente.
+
+---
+
 ## 📖 Recetas
 
 <details>

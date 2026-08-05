@@ -152,6 +152,26 @@ Claude:  → get_document_info → resize_for_variation
 
 ---
 
+## 🆚 Comparaison avec le MCP officiel d'Adobe pour Illustrator
+
+Adobe intègre un serveur MCP dans **Illustrator Beta** (30.4+, toujours réservé à la Beta en août 2026). Il excelle dans le travail sur des documents existants — analyse, recoloration en masse, génération de déclinaisons à partir de modèles, export par lot de plusieurs plans de travail, vérification des polices / liens manquants — et propose une gestion des autorisations à 3 niveaux (exécution sans confirmation / confirmation avant exécution / blocage).
+
+Les deux sont complémentaires plutôt que concurrents : le serveur officiel se concentre sur **l'analyse et le traitement par lot de documents existants**, tandis que ce projet se concentre sur **la création à partir de zéro et les workflows de production print**.
+
+| | Ce projet | MCP officiel d'Adobe (bêta) |
+|---|---|---|
+| Installation | npm (`npx illustrator-mcp-server`) ou installation en un clic via `.mcpb` | Intégré à Illustrator Beta — récupérez une clé d'authentification + URL dans les réglages de l'application, connexion via `mcp-remote` |
+| Versions prises en charge | Illustrator CC 2024+ stable (macOS / Windows) | Illustrator Beta 30.4+ uniquement |
+| Nombre d'outils | 63 | ~40 |
+| Création d'objets à partir de zéro | ✅ Ensemble complet — documents, formes, tracés, blocs de texte, texte sur tracé, dégradés | ❌ Pas de nouveaux objets, blocs de texte ni documents \* |
+| Enregistrement des documents | ✅ `save_document` (enregistrer / enregistrer sous) | ❌ Export uniquement \* |
+| Impression & prépresse | ✅ Traits de coupe, preflight, infos de surimpression / séparation, vectorisation, profils colorimétriques | — |
+| Système de design | ✅ Tokens de design, vérification de contraste WCAG, guides de style, cohérence des textes | — |
+
+\* D'après les retours d'utilisateurs en avril 2026 (bêta). Le serveur officiel est en développement actif — consultez la [documentation d'Adobe](https://helpx.adobe.com/illustrator/desktop/connect-with-other-apps-and-tools/about-using-ai-tools-with-illustrator.html) pour l'état le plus récent.
+
+---
+
 ## 📖 Recettes
 
 <details>

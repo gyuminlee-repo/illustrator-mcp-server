@@ -152,6 +152,26 @@ Claude:  → get_document_info → resize_for_variation
 
 ---
 
+## 🆚 Comparação com o MCP Oficial do Illustrator da Adobe
+
+A Adobe inclui um servidor MCP integrado no **Illustrator Beta** (30.4+, ainda restrito ao Beta em agosto de 2026). Ele se destaca no trabalho com documentos existentes — análise, recolorização em massa, geração de variações a partir de templates, exportação em lote de múltiplas pranchetas e verificação de fontes / links quebrados — e traz um sistema de permissões em 3 níveis (executar sem confirmação / confirmar antes de executar / bloquear).
+
+Os dois são complementares, não concorrentes: o servidor oficial foca em **analisar e processar em lote documentos existentes**, enquanto este projeto foca em **criar do zero e em fluxos de trabalho de produção gráfica**.
+
+| | Este projeto | MCP oficial da Adobe (beta) |
+|---|---|---|
+| Instalação | npm (`npx illustrator-mcp-server`) ou instalação em um clique via `.mcpb` | Integrado ao Illustrator Beta — obtenha a chave de autenticação + URL nas configurações do app e conecte via `mcp-remote` |
+| Versões suportadas | Illustrator CC 2024+ estável (macOS / Windows) | Apenas Illustrator Beta 30.4+ |
+| Número de ferramentas | 63 | ~40 |
+| Criação de objetos do zero | ✅ Conjunto completo — documentos, formas, caminhos, quadros de texto, texto em caminho, gradientes | ❌ Sem novos objetos, quadros de texto ou documentos \* |
+| Salvar documentos | ✅ `save_document` (salvar / salvar como) | ❌ Apenas exportação \* |
+| Impressão e pré-impressão | ✅ Marcas de corte, preflight, informações de sobreimpressão / separação, conversão em contornos, perfis de cor | — |
+| Sistema de design | ✅ Tokens de design, verificação de contraste WCAG, guias de estilo, consistência de texto | — |
+
+\* Baseado em relatos de usuários em abril de 2026 (beta). O servidor oficial está em desenvolvimento ativo — veja a [documentação da Adobe](https://helpx.adobe.com/illustrator/desktop/connect-with-other-apps-and-tools/about-using-ai-tools-with-illustrator.html) para o status mais recente.
+
+---
+
 ## 📖 Receitas
 
 <details>

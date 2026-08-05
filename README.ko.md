@@ -152,6 +152,26 @@ Claude:  → get_document_info → resize_for_variation
 
 ---
 
+## 🆚 Adobe 공식 Illustrator MCP와의 비교
+
+Adobe는 **Illustrator Beta**(30.4 이상, 2026년 8월 기준 여전히 Beta 한정)에 MCP 서버를 내장하고 있습니다. 기존 문서 분석, 일괄 리컬러, 템플릿 기반 바리에이션 생성, 여러 아트보드 일괄 내보내기, 폰트 / 링크 누락 검사 등 기존 문서 처리에 강하며, 3단계 권한 관리(확인 없이 실행 / 실행 전 확인 / 차단)도 내장되어 있습니다.
+
+둘은 경쟁이 아닌 상호 보완 관계입니다. 공식 서버는 **기존 문서의 분석과 일괄 처리**에, 본 프로젝트는 **제로부터의 제작과 인쇄 입고 워크플로우**에 초점을 맞추고 있습니다.
+
+| | 본 프로젝트 | Adobe 공식 MCP (Beta) |
+|---|---|---|
+| 설치 방법 | npm(`npx illustrator-mcp-server`) 또는 `.mcpb` 원클릭 설치 | Illustrator Beta 내장 — 앱 설정에서 인증 키와 URL을 받아 `mcp-remote`로 연결 |
+| 지원 버전 | 안정판 Illustrator CC 2024+ (macOS / Windows) | Illustrator Beta 30.4+ 한정 |
+| 도구 수 | 63 | 약 40 |
+| 제로부터 오브젝트 생성 | ✅ 풀셋 — 문서, 도형, 패스, 텍스트 프레임, 패스 문자, 그라디언트 | ❌ 새 오브젝트・텍스트 프레임・문서 생성 불가 \* |
+| 문서 저장 | ✅ `save_document` (저장 / 다른 이름으로 저장) | ❌ 내보내기만 가능 \* |
+| 인쇄・출판(DTP) 기능 | ✅ 재단선, 프리플라이트, 오버프린트 / 분판 정보, 아웃라인 변환, 컬러 프로파일 | — |
+| 디자인 시스템 기능 | ✅ 디자인 토큰, WCAG 대비 검사, 스타일 가이드, 텍스트 일관성 검사 | — |
+
+\* 2026년 4월(Beta) 시점의 사용자 보고에 기반합니다. 공식 서버는 활발히 개발 중입니다 — 최신 상태는 [Adobe 공식 문서](https://helpx.adobe.com/illustrator/desktop/connect-with-other-apps-and-tools/about-using-ai-tools-with-illustrator.html)를 참조하세요.
+
+---
+
 ## 📖 레시피
 
 <details>
