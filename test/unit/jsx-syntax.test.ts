@@ -40,7 +40,8 @@ for (const file of collectTsFiles(TOOLS_DIR)) {
     // new Function はパースのみで呼び出さない
     // eslint-disable-next-line no-eval
     const code = eval('`' + m[1].replace(/`/g, '\\`') + '`') as string;
-    targets.push({ file, code });
+    // Windowsのパス区切りを正規化（endsWith / split の比較を \\ でも通すため）
+    targets.push({ file: file.replace(/\\/g, '/'), code });
   } catch {
     // 抽出失敗（テンプレート境界の誤検出等）は構文チェック対象外とする
   }
