@@ -291,6 +291,11 @@ if (preflight) {
           for (var ai = 0; ai < doc.artboards.length; ai++) {
             // パス区切り等の危険文字とスペースをハイフンに置換。_<n>- の連番で同名アートボードの衝突も防ぐ
             var abLabel = doc.artboards[ai].name.replace(/[\\/\\\\: ]/g, '-');
+            // SVGは非ASCIIファイル名で警告ダイアログが出て書き出しに失敗するため
+            // ASCIIにフォールバック（一意性は _<n>- の連番が保証。実機検証: 日本語名で失敗確認済み）
+            if (format === "svg" && /[^\\x00-\\x7F]/.test(abLabel)) {
+              abLabel = "artboard";
+            }
             var abPath = dirName + pathSep + nameNoExt + '_' + (ai + 1) + '-' + abLabel + '.' + format;
             var exportError = null;
             try {
