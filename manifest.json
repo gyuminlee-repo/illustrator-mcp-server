@@ -2,7 +2,7 @@
   "manifest_version": "0.3",
   "name": "Illustrator MCP",
   "version": "1.2.10",
-  "description": "MCP server for reading, manipulating, and exporting Adobe Illustrator design data",
+  "description": "MCP server for Adobe Illustrator with 63 tools — read, create, and export design data. Everything the official Illustrator MCP (beta) can do and more, on stable Illustrator.",
   "author": {
     "name": "cyocun(IE3)",
     "email": "cyocun@gmail.com"
