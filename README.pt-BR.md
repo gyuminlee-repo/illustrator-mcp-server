@@ -550,6 +550,14 @@ O teste E2E cria documentos novos (RGB + CMYK), insere objetos de teste, executa
 
 ---
 
+## Agradecimentos
+
+Obrigado às seguintes pessoas pelo feedback que moldou este projeto:
+
+- [OKI Yoshiya (@448jp)](https://github.com/448jp)
+
+---
+
 ## Aviso Legal
 
 Esta ferramenta automatiza muitas operações do Illustrator, mas a IA pode cometer erros. Dados extraídos, resultados de preflight e modificações de documento devem sempre ser revisados por uma pessoa. **Não confie nesta ferramenta como sua única verificação de qualidade.** Use-a como assistente junto com sua própria verificação manual, especialmente para envios a gráficas e entregas a clientes. Os autores não se responsabilizam por quaisquer danos ou perdas decorrentes do uso deste software ou de seus resultados.
