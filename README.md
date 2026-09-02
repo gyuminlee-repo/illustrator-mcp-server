@@ -162,7 +162,7 @@ Claude:  → get_document_info → resize_for_variation
 |---|---|---|
 | Installation | npm (`npx illustrator-mcp-server`) or one-click `.mcpb` install | Built into Illustrator Beta — get an auth key + URL from the app settings, connect via `mcp-remote` |
 | Supported versions | Stable Illustrator CC 2024+ (macOS / Windows) | Illustrator Beta 30.4+ only |
-| Number of tools | 63 | ~40 |
+| Number of tools | 67 | ~40 |
 | Analyzing & batch-processing existing documents | ✅ Structure / color / font analysis, bulk recolor, variations & datasets, batch artboard export (`artboard:all`), font & broken-link preflight | ✅ Its main focus |
 | Creating objects from scratch | ✅ Full set — documents, shapes, paths, text frames, path text, gradients | ❌ No new objects, text frames, or documents \* |
 | Saving documents | ✅ `save_document` (save / save-as) | ❌ Export only \* |
@@ -343,6 +343,7 @@ Pre-built workflow templates available in the Claude Desktop prompt picker.
 | `duplicate_objects` | Duplicate objects with optional offset |
 | `set_z_order` | Change stacking order (front/back) |
 | `move_to_layer` | Move objects to a different layer |
+| `delete_objects` | Delete objects by UUID (locked objects need `force_unlock`; reversible with `undo`) |
 | `manage_artboards` | Add, remove, resize, rename, rearrange artboards |
 | `manage_swatches` | Add, update, or delete swatches |
 | `manage_linked_images` | Relink or embed placed images |

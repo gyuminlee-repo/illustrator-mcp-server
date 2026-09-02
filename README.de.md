@@ -162,7 +162,7 @@ Claude:  → get_document_info → resize_for_variation
 |---|---|---|
 | Installation | npm (`npx illustrator-mcp-server`) oder `.mcpb` per Ein-Klick-Installation | In Illustrator Beta integriert — Auth-Schlüssel + URL in den App-Einstellungen abrufen, Verbindung über `mcp-remote` |
 | Unterstützte Versionen | Stabiles Illustrator CC 2024+ (macOS / Windows) | Nur Illustrator Beta 30.4+ |
-| Anzahl der Werkzeuge | 63 | ca. 40 |
+| Anzahl der Werkzeuge | 67 | ca. 40 |
 | Analyse & Stapelverarbeitung bestehender Dokumente | ✅ Struktur- / Farb- / Schriftanalyse, Massen-Umfärbung, Varianten & Datensätze, Stapel-Export aller Zeichenflächen (`artboard:all`), Preflight für Schriften & defekte Verknüpfungen | ✅ Sein Hauptfokus |
 | Objekte von Grund auf erstellen | ✅ Kompletter Satz — Dokumente, Formen, Pfade, Textrahmen, Pfadtext, Verläufe | ❌ Keine neuen Objekte, Textrahmen oder Dokumente \* |
 | Dokumente speichern | ✅ `save_document` (Speichern / Speichern unter) | ❌ Nur Export \* |
@@ -342,6 +342,7 @@ Vorgefertigte Workflow-Vorlagen stehen im Prompt-Picker von Claude Desktop zur V
 | `duplicate_objects` | Objekte duplizieren mit optionalem Versatz |
 | `set_z_order` | Stapelreihenfolge ändern (vorn/hinten) |
 | `move_to_layer` | Objekte auf eine andere Ebene verschieben |
+| `delete_objects` | Objekte per UUID löschen (gesperrte Objekte benötigen `force_unlock`; mit `undo` rückgängig machbar) |
 | `manage_artboards` | Zeichenflächen hinzufügen, entfernen, skalieren, umbenennen, neu anordnen |
 | `manage_swatches` | Farbfelder hinzufügen, aktualisieren oder löschen |
 | `manage_linked_images` | Platzierte Bilder neu verknüpfen oder einbetten |

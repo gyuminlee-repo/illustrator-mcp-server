@@ -161,7 +161,7 @@ Claude:  → get_document_info → resize_for_variation
 |---|---|---|
 | 入手方法 | npm（`npx illustrator-mcp-server`）または `.mcpb` のワンクリックインストール | Illustrator Beta に内蔵 — アプリの設定画面から認証キーと URL を取得し `mcp-remote` で接続 |
 | 対応バージョン | 安定版 Illustrator CC 2024+（macOS / Windows） | Illustrator Beta 30.4+ のみ |
-| ツール数 | 63 | 約 40 |
+| ツール数 | 67 | 約 40 |
 | 既存ドキュメントの分析・一括処理 | ✅ 構造 / カラー / フォント分析、一括リカラー、バリエーション生成・データセット、全アートボード一括書き出し（`artboard:all`）、フォント / リンク切れチェック | ✅ 主要フォーカス |
 | オブジェクトのゼロからの作成 | ✅ フルセット — ドキュメント、図形、パス、テキストフレーム、パス上文字、グラデーション | ❌ 新規オブジェクト・テキストフレーム・ドキュメントの作成は不可 \* |
 | 保存 | ✅ `save_document`（保存 / 別名保存） | ❌ 書き出しのみ \* |
@@ -342,6 +342,7 @@ Claude Desktop のプロンプト一覧から選択できるワークフロー�
 | `duplicate_objects` | オブジェクトの複製（オフセット指定可） |
 | `set_z_order` | 重なり順の変更（最前面/前面/背面/最背面） |
 | `move_to_layer` | オブジェクトを別レイヤーに移動 |
+| `delete_objects` | UUID 指定でオブジェクトを削除（ロック中は `force_unlock` が必要、`undo` で戻せる） |
 | `manage_artboards` | アートボードの追加・削除・リサイズ・リネーム・整列 |
 | `manage_swatches` | スウォッチの追加・更新・削除 |
 | `manage_linked_images` | リンク画像の差し替え・埋め込み |

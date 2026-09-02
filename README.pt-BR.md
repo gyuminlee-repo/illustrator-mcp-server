@@ -162,7 +162,7 @@ Claude:  → get_document_info → resize_for_variation
 |---|---|---|
 | Instalação | npm (`npx illustrator-mcp-server`) ou instalação em um clique via `.mcpb` | Integrado ao Illustrator Beta — obtenha a chave de autenticação + URL nas configurações do app e conecte via `mcp-remote` |
 | Versões suportadas | Illustrator CC 2024+ estável (macOS / Windows) | Apenas Illustrator Beta 30.4+ |
-| Número de ferramentas | 63 | ~40 |
+| Número de ferramentas | 67 | ~40 |
 | Análise e processamento em lote de documentos existentes | ✅ Análise de estrutura / cores / fontes, recolorização em massa, variações e conjuntos de dados, exportação em lote de pranchetas (`artboard:all`), preflight de fontes e links quebrados | ✅ Seu foco principal |
 | Criação de objetos do zero | ✅ Conjunto completo — documentos, formas, caminhos, quadros de texto, texto em caminho, gradientes | ❌ Sem novos objetos, quadros de texto ou documentos \* |
 | Salvar documentos | ✅ `save_document` (salvar / salvar como) | ❌ Apenas exportação \* |
@@ -342,6 +342,7 @@ Templates de fluxo de trabalho pré-construídos, disponíveis no seletor de pro
 | `duplicate_objects` | Duplica objetos com deslocamento opcional |
 | `set_z_order` | Muda a ordem de empilhamento (frente/fundo) |
 | `move_to_layer` | Move objetos para outra camada |
+| `delete_objects` | Exclui objetos por UUID (objetos bloqueados exigem `force_unlock`; reversível com `undo`) |
 | `manage_artboards` | Adiciona, remove, redimensiona, renomeia, reorganiza pranchetas |
 | `manage_swatches` | Adiciona, atualiza ou exclui amostras de cor |
 | `manage_linked_images` | Re-vincula ou incorpora imagens inseridas |

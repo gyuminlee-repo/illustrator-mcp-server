@@ -4,6 +4,7 @@ import { register as registerExportPdf } from '../../src/tools/export/export-pdf
 import { register as registerApplyColorProfile } from '../../src/tools/modify/apply-color-profile.js';
 import { register as registerConvertToOutlines } from '../../src/tools/modify/convert-to-outlines.js';
 import { register as registerModifyObject } from '../../src/tools/modify/modify-object.js';
+import { register as registerDeleteObjects } from '../../src/tools/modify/delete-objects.js';
 import { register as registerCreateLine } from '../../src/tools/modify/create-line.js';
 import { register as registerPlaceImage } from '../../src/tools/modify/place-image.js';
 import { register as registerImportSvgAsEditable } from '../../src/tools/modify/import-svg-as-editable.js';
@@ -33,6 +34,31 @@ describe('modify tool schemas', () => {
         stroke: { width: 2 },
       },
     }).success).toBe(true);
+  });
+
+  it('accepts hidden / locked booleans in modify_object', () => {
+    const schema = captureInputSchema(registerModifyObject);
+
+    expect(schema.safeParse({
+      uuid: 'example-uuid',
+      properties: { hidden: true, locked: false },
+    }).success).toBe(true);
+
+    expect(schema.safeParse({
+      uuid: 'example-uuid',
+      properties: { hidden: 'yes' },
+    }).success).toBe(false);
+  });
+
+  it('requires at least one uuid in delete_objects and defaults force_unlock to false', () => {
+    const schema = captureInputSchema(registerDeleteObjects);
+
+    expect(schema.safeParse({ uuids: [] }).success).toBe(false);
+    expect(schema.safeParse({ uuids: ['a'] }).success).toBe(true);
+
+    const parsed = schema.parse({ uuids: ['a', 'b'] }) as { uuids: string[]; force_unlock: boolean };
+    expect(parsed.force_unlock).toBe(false);
+    expect(schema.safeParse({ uuids: ['a'], force_unlock: true }).success).toBe(true);
   });
 
   it('allows create_line stroke updates without requiring width', () => {

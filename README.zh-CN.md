@@ -162,7 +162,7 @@ Claude:  → get_document_info → resize_for_variation
 |---|---|---|
 | 获取方式 | npm（`npx illustrator-mcp-server`）或一键安装 `.mcpb` | 内置于 Illustrator Beta —— 在应用设置中获取认证密钥和 URL，通过 `mcp-remote` 连接 |
 | 支持版本 | 稳定版 Illustrator CC 2024+（macOS / Windows） | 仅限 Illustrator Beta 30.4+ |
-| 工具数量 | 63 | 约 40 |
+| 工具数量 | 67 | 约 40 |
 | 现有文档的分析与批量处理 | ✅ 结构 / 颜色 / 字体分析、批量重新配色、变体生成与数据集、全画板批量导出（`artboard:all`）、字体 / 链接缺失预检 | ✅ 主要专注领域 |
 | 从零创建对象 | ✅ 全套 —— 文档、图形、路径、文本框、路径文字、渐变 | ❌ 无法创建新对象、文本框或文档 \* |
 | 保存文档 | ✅ `save_document`（保存 / 另存为） | ❌ 仅支持导出 \* |
@@ -342,6 +342,7 @@ Claude:  → check_contrast (auto_detect: true)
 | `duplicate_objects` | 复制对象（可选偏移量） |
 | `set_z_order` | 更改层叠顺序（前/后） |
 | `move_to_layer` | 将对象移动到其他图层 |
+| `delete_objects` | 按 UUID 删除对象（锁定对象需要 `force_unlock`；可用 `undo` 撤销） |
 | `manage_artboards` | 添加、删除、调整大小、重命名、重新排列画板 |
 | `manage_swatches` | 添加、更新或删除色板 |
 | `manage_linked_images` | 重新链接或嵌入置入的图像 |

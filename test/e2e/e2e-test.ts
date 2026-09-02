@@ -1422,6 +1422,64 @@ async function main(): Promise<void> {
     assert(r2.success === true, 'move back should succeed');
   });
 
+  // --- modify_object hidden / locked ---
+
+  await test('modify_object → hidden round-trip', async () => {
+    const r1 = await callTool(client, 'modify_object', {
+      uuid: rectUuid,
+      properties: { hidden: true },
+    }) as any;
+    assert(r1.success === true, 'hide should succeed: ' + JSON.stringify(r1));
+    assert(r1.verified.visible === false, 'verified.visible should be false after hide');
+    const r2 = await callTool(client, 'modify_object', {
+      uuid: rectUuid,
+      properties: { hidden: false },
+    }) as any;
+    assert(r2.success === true, 'show should succeed');
+    assert(r2.verified.visible === true, 'verified.visible should be true after show');
+  });
+
+  // --- delete_objects ---
+
+  await test('delete_objects → skips locked unless force_unlock, removes others', async () => {
+    const a = await callTool(client, 'create_rectangle', {
+      x: M, y: 400, width: 40, height: 40,
+      fill: { type: 'rgb', r: 0, g: 0, b: 0 },
+      name: '__e2e_delete_plain',
+      layer_name: 'TestLayer-Main',
+    }) as any;
+    const b = await callTool(client, 'create_rectangle', {
+      x: M + 60, y: 400, width: 40, height: 40,
+      fill: { type: 'rgb', r: 0, g: 0, b: 0 },
+      name: '__e2e_delete_locked',
+      layer_name: 'TestLayer-Main',
+    }) as any;
+    const lock = await callTool(client, 'modify_object', {
+      uuid: b.uuid,
+      properties: { locked: true },
+    }) as any;
+    assert(lock.success === true, 'lock should succeed: ' + JSON.stringify(lock));
+
+    const r1 = await callTool(client, 'delete_objects', {
+      uuids: [a.uuid, b.uuid, 'not-a-real-uuid'],
+    }) as any;
+    assert(r1.success === false, 'should report failure because of locked item: ' + JSON.stringify(r1));
+    assert(r1.deletedCount === 1, `should delete 1, got ${r1.deletedCount}`);
+    assert(r1.deleted[0].name === '__e2e_delete_plain', 'deleted snapshot should carry name');
+    assert(r1.notFound.length === 1 && r1.notFound[0] === 'not-a-real-uuid', 'unknown uuid goes to notFound');
+    assert(r1.errors.length === 1 && r1.errors[0].uuid === b.uuid, 'locked uuid goes to errors');
+
+    const r2 = await callTool(client, 'delete_objects', {
+      uuids: [b.uuid],
+      force_unlock: true,
+    }) as any;
+    assert(r2.success === true, 'force_unlock delete should succeed: ' + JSON.stringify(r2));
+    assert(r2.deletedCount === 1, `should delete 1, got ${r2.deletedCount}`);
+
+    const remaining = await callTool(client, 'find_objects', { name: '__e2e_delete_' }) as any;
+    assert(remaining.count === 0, `no __e2e_delete_ objects should remain, got ${remaining.count}`);
+  });
+
   // --- manage_artboards ---
 
   await test('manage_artboards → add', async () => {

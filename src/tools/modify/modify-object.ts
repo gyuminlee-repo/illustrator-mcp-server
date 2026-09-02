@@ -31,6 +31,17 @@ if (preflight) {
       var errors = [];
       var abRect = (coordSystem === "artboard-web") ? getActiveArtboardRect() : null;
 
+      // locked=false は他のプロパティ変更が弾かれないよう最初に適用する
+      if (props.locked === false) {
+        try { item.locked = false; }
+        catch(e) { errors.push("locked: " + e.message); }
+      }
+
+      if (typeof props.hidden === "boolean") {
+        try { item.hidden = props.hidden; }
+        catch(e) { errors.push("hidden: " + e.message); }
+      }
+
       if (props.position) {
         try {
           var pos = webToAiPoint(props.position.x, props.position.y, coordSystem, abRect);
@@ -120,6 +131,12 @@ if (preflight) {
         } catch(e) { errors.push("font_size: " + e.message); }
       }
 
+      // locked=true は他の変更を全て終えてから最後に適用する
+      if (props.locked === true) {
+        try { item.locked = true; }
+        catch(e) { errors.push("locked: " + e.message); }
+      }
+
       var verifiedState = verifyItem(item, coordSystem, abRect);
       if (errors.length > 0) {
         var result = { success: false, uuid: params.uuid, coordinateSystem: coordSystem, errors: errors, verified: verifiedState };
@@ -165,6 +182,8 @@ export function register(server: McpServer): void {
             rotation: z.number().optional().describe('Rotation in degrees. Default mode is "delta" (additive). Use rotation_mode: "absolute" for target angle.'),
             rotation_mode: z.enum(['delta', 'absolute']).optional().default('delta').describe('delta = add to current rotation, absolute = set to exact angle'),
             name: z.string().optional().describe('Object name'),
+            hidden: z.boolean().optional().describe('Hide (true) or show (false) the object without deleting it'),
+            locked: z.boolean().optional().describe('Lock (true) or unlock (false) the object. Unlock is applied before other changes, lock after them'),
             contents: z.string().optional().describe('Text contents (for text frames)'),
             font_name: z.string().optional().describe('Font name for text frames (partial match supported)'),
             font_size: z.number().optional().describe('Font size (for text frames)'),

@@ -162,7 +162,7 @@ Claude:  → get_document_info → resize_for_variation
 |---|---|---|
 | Installation | npm (`npx illustrator-mcp-server`) ou installation en un clic via `.mcpb` | Intégré à Illustrator Beta — récupérez une clé d'authentification + URL dans les réglages de l'application, connexion via `mcp-remote` |
 | Versions prises en charge | Illustrator CC 2024+ stable (macOS / Windows) | Illustrator Beta 30.4+ uniquement |
-| Nombre d'outils | 63 | ~40 |
+| Nombre d'outils | 67 | ~40 |
 | Analyse & traitement par lot de documents existants | ✅ Analyse de structure / couleurs / polices, recoloration en masse, déclinaisons & jeux de données, export par lot des plans de travail (`artboard:all`), preflight polices & liens manquants | ✅ Son axe principal |
 | Création d'objets à partir de zéro | ✅ Ensemble complet — documents, formes, tracés, blocs de texte, texte sur tracé, dégradés | ❌ Pas de nouveaux objets, blocs de texte ni documents \* |
 | Enregistrement des documents | ✅ `save_document` (enregistrer / enregistrer sous) | ❌ Export uniquement \* |
@@ -342,6 +342,7 @@ Des modèles de workflow prédéfinis sont disponibles dans le sélecteur de pro
 | `duplicate_objects` | Duplique des objets avec un décalage optionnel |
 | `set_z_order` | Modifie l'ordre d'empilement (premier/arrière-plan) |
 | `move_to_layer` | Déplace des objets vers un autre calque |
+| `delete_objects` | Supprime des objets par UUID (les objets verrouillés nécessitent `force_unlock` ; réversible avec `undo`) |
 | `manage_artboards` | Ajoute, supprime, redimensionne, renomme, réorganise les plans de travail |
 | `manage_swatches` | Ajoute, met à jour ou supprime des nuances |
 | `manage_linked_images` | Relie ou incorpore les images importées |

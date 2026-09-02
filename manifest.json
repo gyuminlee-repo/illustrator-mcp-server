@@ -2,7 +2,7 @@
   "manifest_version": "0.3",
   "name": "Illustrator MCP",
   "version": "1.2.10",
-  "description": "MCP server for Adobe Illustrator with 63 tools — read, create, and export design data. Everything the official Illustrator MCP (beta) can do and more, on stable Illustrator.",
+  "description": "MCP server for Adobe Illustrator with 67 tools — read, create, and export design data. Everything the official Illustrator MCP (beta) can do and more, on stable Illustrator.",
   "author": {
     "name": "cyocun(IE3)",
     "email": "cyocun@gmail.com"
@@ -77,6 +77,10 @@
     { "name": "manage_artboards", "description": "Add, remove, resize, rename, or rearrange artboards" },
     { "name": "set_z_order", "description": "Change the stacking order of an object" },
     { "name": "move_to_layer", "description": "Move objects to a different layer" },
+    { "name": "delete_objects", "description": "Delete objects by UUID" },
+    { "name": "create_crop_marks", "description": "Create crop marks (trim marks) on artboards" },
+    { "name": "import_svg_as_editable", "description": "Import an SVG file as editable paths/text/groups" },
+    { "name": "set_illustrator_version", "description": "Choose which installed Illustrator version to control" },
     { "name": "apply_graphic_style", "description": "Apply a graphic style to objects" },
     { "name": "list_graphic_styles", "description": "List all graphic styles in the document" },
     { "name": "manage_swatches", "description": "Add, update, or delete swatches" },

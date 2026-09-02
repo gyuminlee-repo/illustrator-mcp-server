@@ -64,6 +64,7 @@ import { register as registerListFonts } from './read/list-fonts.js';
 import { register as registerManageArtboards } from './modify/manage-artboards.js';
 import { register as registerSetZOrder } from './modify/set-z-order.js';
 import { register as registerMoveToLayer } from './modify/move-to-layer.js';
+import { register as registerDeleteObjects } from './modify/delete-objects.js';
 import { register as registerApplyGraphicStyle } from './modify/apply-graphic-style.js';
 import { register as registerManageSwatches } from './modify/manage-swatches.js';
 import { register as registerApplyTextStyle } from './modify/apply-text-style.js';
@@ -141,6 +142,7 @@ export function registerAllTools(server: McpServer): void {
   registerManageArtboards(server);
   registerSetZOrder(server);
   registerMoveToLayer(server);
+  registerDeleteObjects(server);
   registerApplyGraphicStyle(server);
   registerManageSwatches(server);
   registerApplyTextStyle(server);

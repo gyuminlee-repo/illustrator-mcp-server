@@ -162,7 +162,7 @@ Claude:  → get_document_info → resize_for_variation
 |---|---|---|
 | 설치 방법 | npm(`npx illustrator-mcp-server`) 또는 `.mcpb` 원클릭 설치 | Illustrator Beta 내장 — 앱 설정에서 인증 키와 URL을 받아 `mcp-remote`로 연결 |
 | 지원 버전 | 안정판 Illustrator CC 2024+ (macOS / Windows) | Illustrator Beta 30.4+ 한정 |
-| 도구 수 | 63 | 약 40 |
+| 도구 수 | 67 | 약 40 |
 | 기존 문서 분석・일괄 처리 | ✅ 구조 / 컬러 / 폰트 분석, 일괄 리컬러, 바리에이션 생성・데이터셋, 전체 아트보드 일괄 내보내기(`artboard:all`), 폰트 / 링크 누락 프리플라이트 | ✅ 주요 포커스 |
 | 제로부터 오브젝트 생성 | ✅ 풀셋 — 문서, 도형, 패스, 텍스트 프레임, 패스 문자, 그라디언트 | ❌ 새 오브젝트・텍스트 프레임・문서 생성 불가 \* |
 | 문서 저장 | ✅ `save_document` (저장 / 다른 이름으로 저장) | ❌ 내보내기만 가능 \* |
@@ -342,6 +342,7 @@ Claude Desktop의 프롬프트 피커에서 사용할 수 있는 사전 구축�
 | `duplicate_objects` | 객체 복제 (오프셋 옵션 포함) |
 | `set_z_order` | 겹침 순서 변경 (앞/뒤) |
 | `move_to_layer` | 객체를 다른 레이어로 이동 |
+| `delete_objects` | UUID로 객체 삭제 (잠긴 객체는 `force_unlock` 필요, `undo`로 되돌리기 가능) |
 | `manage_artboards` | 아트보드 추가, 제거, 크기 조정, 이름 변경, 재배치 |
 | `manage_swatches` | 스와치 추가, 업데이트, 삭제 |
 | `manage_linked_images` | 배치된 이미지의 재링크 또는 임베드 |
